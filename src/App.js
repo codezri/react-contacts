@@ -1,33 +1,29 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import Contacts from './components/contacts';
-import People   from './components/People';
-import Persons   from './components/Persons';
+import People from './components/People';
+import Persons from './components/Persons';
 
-class App extends Component {
 
-    state = {
-        contacts: []
-    };
+function App() {
 
-    componentDidMount() {
-        fetch('http://jsonplaceholder.typicode.com/users')
-            .then(res => res.json())
-            .then((data) => {
-                this.setState({ contacts: data })
-            })
-            .catch(console.log)
-    }
+  const [contacts, setContacts] = useState([]);
 
-    render() {
-        const { contacts } = this.state;
-        return (
-            <div>
-              <Contacts contacts={contacts} />
-              <Persons/>
-              <People/>
-            </div>
-        )
-    }
+  useEffect(() => {
+    fetch('http://jsonplaceholder.typicode.com/users')
+      .then(res => res.json())
+      .then((data) => {
+          setContacts(data);
+      })
+      .catch(console.error)
+  }, []);
+
+  return (
+      <div>
+        <Contacts contacts={contacts} />
+        <Persons/>
+        <People/>
+      </div>
+  );
 }
 
 export default App;
